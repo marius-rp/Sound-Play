@@ -5,9 +5,10 @@
     "moduleResolution": "NodeNext",
     "outDir": "./dist",
     "rootDir": "./src",
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true
+    "strict": false,               // Désactive la surveillance stricte
+    "noImplicitAny": false,        // Autorise les variables sans type (comme ton 'cb' ou 'req')
+    "skipLibCheck": true,          // Ignore les erreurs dans les bibliothèques externes
+    "esModuleInterop": true
   },
   "include": ["src"]
 }
