@@ -39,22 +39,28 @@ if (!fs.existsSync(PREVIEW_CACHE_PATH)) {
 
 const searchCache = new NodeCache({ stdTTL: 7200, checkperiod: 600 })
 
-if (!isWindows && fs.existsSync(YTDLP_PATH)) {
-  try {
-    fs.chmodSync(YTDLP_PATH, 0o755)
-    logger(
-      "SYSTEM",
-      FILE_NAME,
-      "INFO",
-      "Permissions d'exécution accordées à yt-dlp",
-    )
-  } catch (err: any) {
-    logger(
-      "SYSTEM",
-      FILE_NAME,
-      "ERROR",
-      `Impossible de chmod yt-dlp : ${err.message}`,
-    )
+const ensureExecutable = () => {
+  if (!isWindows && fs.existsSync(YTDLP_PATH)) {
+    try {
+      const stats = fs.statSync(YTDLP_PATH)
+      // On vérifie si le fichier n'est pas déjà exécutable (0o755)
+      if (!(stats.mode & fs.constants.S_IXUSR)) {
+        fs.chmodSync(YTDLP_PATH, 0o755)
+        logger(
+          "SYSTEM",
+          FILE_NAME,
+          "INFO",
+          "Permissions d'exécution appliquées à yt-dlp",
+        )
+      }
+    } catch (err: any) {
+      logger(
+        "SYSTEM",
+        FILE_NAME,
+        "ERROR",
+        `Erreur permissions yt-dlp : ${err.message}`,
+      )
+    }
   }
 }
 
@@ -174,6 +180,8 @@ export const musicYoutubeService = {
     videoId: string,
     userId: string | number = "SYSTEM",
   ): Promise<void> => {
+    ensureExecutable()
+
     const filePath = path.resolve(STORAGE_PATH, `${videoId}.mp3`)
     if (fs.existsSync(filePath)) {
       logger(
@@ -217,7 +225,6 @@ export const musicYoutubeService = {
         const randomUA = getRandomUserAgent()
 
         const cmd = `"${YTDLP_PATH}" \
-          --ffmpeg-location "${process.cwd()}" \
           --limit-rate 500K \
           --no-part \
           --no-progress \
@@ -270,6 +277,8 @@ export const musicYoutubeService = {
     videoId: string,
     userId: string | number = "SYSTEM",
   ): Promise<string> => {
+    ensureExecutable()
+
     const previewPath = path.resolve(PREVIEW_CACHE_PATH, `${videoId}.mp3`)
     if (fs.existsSync(previewPath)) return previewPath
 
@@ -277,7 +286,6 @@ export const musicYoutubeService = {
       try {
         const randomUA = getRandomUserAgent()
         const cmd = `"${YTDLP_PATH}" \
-          --ffmpeg-location "${process.cwd()}" \
           --limit-rate 500K \
           --no-part \
           --user-agent "${randomUA}" \
