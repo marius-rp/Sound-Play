@@ -225,12 +225,12 @@ export const musicYoutubeService = {
         const randomUA = getRandomUserAgent()
 
         const cmd = `"${YTDLP_PATH}" \
-          --js-runtimes node \
+          --username oauth2 --password '' \
           --limit-rate 500K \
           --no-part \
-          --no-progress \
           --user-agent "${randomUA}" \
           -x --audio-format mp3 --audio-quality 128k \
+          --download-sections "*0-30" \
           -o "${filePath}" \
           "https://www.youtube.com/watch?v=${videoId}"`
 
@@ -287,12 +287,11 @@ export const musicYoutubeService = {
       try {
         const randomUA = getRandomUserAgent()
         const cmd = `"${YTDLP_PATH}" \
-          --js-runtimes node \
+          --username oauth2 --password '' \
           --limit-rate 500K \
           --no-part \
           --user-agent "${randomUA}" \
           -x --audio-format mp3 --audio-quality 128k \
-          --download-sections "*0-30" \
           -o "${previewPath}" \
           "https://www.youtube.com/watch?v=${videoId}"`
 
