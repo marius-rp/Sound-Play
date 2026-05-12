@@ -1,0 +1,103 @@
+# =========================
+# Node modules
+# =========================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# =========================
+# Build / dist
+# =========================
+dist/
+build/
+.next/
+out/
+coverage/
+
+# =========================
+# TypeScript
+# =========================
+*.tsbuildinfo
+
+# =========================
+# Environment variables
+# =========================
+.env
+.env.*
+!.env.example
+
+# =========================
+# Executable files
+# =========================
+*.exe
+*.exe.*
+
+# =========================
+# Musics files
+# =========================
+storage/
+
+# =========================
+# cache files
+# =========================
+cache_previews/
+
+# =========================
+# Logs
+# =========================
+logs/
+*.log
+
+# =========================
+# OS files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# IDE / Editor
+# =========================
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# =========================
+# React specific
+# =========================
+node_modules/
+build/
+.cache/
+.eslintcache
+
+# =========================
+# Tailwind / PostCSS
+# =========================
+.postcss-cache/
+
+# =========================
+# Testing
+# =========================
+coverage/
+jest-cache/
+
+# =========================
+# Temporary files
+# =========================
+tmp/
+temp/
+
+# =========================
+# Docker (si utilisé)
+# =========================
+docker-compose.override.yml
+
+# =========================
+# Misc
+# =========================
+*.local
+
+
+.prettierrc
