@@ -225,6 +225,7 @@ export const musicYoutubeService = {
         const randomUA = getRandomUserAgent()
 
         const cmd = `"${YTDLP_PATH}" \
+          --js-runtimes node \
           --limit-rate 500K \
           --no-part \
           --no-progress \
@@ -286,6 +287,7 @@ export const musicYoutubeService = {
       try {
         const randomUA = getRandomUserAgent()
         const cmd = `"${YTDLP_PATH}" \
+          --js-runtimes node \
           --limit-rate 500K \
           --no-part \
           --user-agent "${randomUA}" \
