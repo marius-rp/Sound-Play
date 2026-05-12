@@ -13,7 +13,9 @@ import { logger } from "../../utils/logger.helper"
 const execPromise = promisify(exec)
 const FILE_NAME = "music-youtube.service.ts"
 
-const YTDLP_PATH = path.join(process.cwd(), "yt-dlp.exe")
+const isWindows = process.platform === "win32"
+const YTDLP_FILENAME = isWindows ? "yt-dlp.exe" : "yt-dlp"
+const YTDLP_PATH = path.join(process.cwd(), YTDLP_FILENAME)
 const STORAGE_PATH = path.join(process.cwd(), LINK_FILES_MUSICS)
 const PREVIEW_CACHE_PATH = path.join(process.cwd(), "cache_previews")
 
@@ -36,6 +38,25 @@ if (!fs.existsSync(PREVIEW_CACHE_PATH)) {
 }
 
 const searchCache = new NodeCache({ stdTTL: 7200, checkperiod: 600 })
+
+if (!isWindows && fs.existsSync(YTDLP_PATH)) {
+  try {
+    fs.chmodSync(YTDLP_PATH, 0o755)
+    logger(
+      "SYSTEM",
+      FILE_NAME,
+      "INFO",
+      "Permissions d'exécution accordées à yt-dlp",
+    )
+  } catch (err: any) {
+    logger(
+      "SYSTEM",
+      FILE_NAME,
+      "ERROR",
+      `Impossible de chmod yt-dlp : ${err.message}`,
+    )
+  }
+}
 
 export const musicYoutubeService = {
   search: async (
